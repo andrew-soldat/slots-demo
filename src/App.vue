@@ -1,26 +1,43 @@
 <template>
-  <users-list :users="users" />
+  <ListItems :items="users" :fields="['name', 'username']">
+    <template #item="slotProps">
+      <Users :item="slotProps.item" />
+    </template>
+  </ListItems>
+  <ListItems :items="todos" :fields="['title']">
+    <template #item="slotProps">
+      <Todos :item="slotProps.item" />
+    </template>
+  </ListItems>
 </template>
 
 <script>
-import UsersList from "./components/UsersList.vue";
+import ListItems from "./components/ListItems.vue";
+import Users from "./components/Users.vue";
+import Todos from "./components/Todos";
 
-import { loadUsers } from "./api";
+import { loadUsers, loadTodos } from "./api";
 export default {
   name: 'App',
   components: {
-    UsersList,
+    ListItems,
+    Users,
+    Todos,
   },
   data() {
     return {
       users: [],
+      todos: [],
     }
   },
   mounted() {
     loadUsers().then((users) => {
       this.users = users;
     });
-  }
+    loadTodos().then((todos) => {
+      this.todos = todos;
+    });
+  },
 }
 </script>
 e

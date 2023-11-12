@@ -3,3 +3,9 @@ export function loadUsers() {
         r.json()
     );
 }
+
+export function loadTodos() {
+    return fetch("https://jsonplaceholder.typicode.com/todos").then((r) =>
+        r.json()
+    );
+}
