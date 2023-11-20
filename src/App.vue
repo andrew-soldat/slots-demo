@@ -1,9 +1,15 @@
 <template>
+  <button @click="isPopupOpen = true">Popup</button>
+  <Popup @close="isPopupOpen = false" @ok="popupConfirmed" :isOpen="isPopupOpen">
+    Do you really want to cancel?
+  </Popup>
+  <hr>
   <ListItems :items="users" :fields="['name', 'username']">
     <template #item="slotProps">
       <Users :item="slotProps.item" />
     </template>
   </ListItems>
+  <hr>
   <ListItems :items="todos" :fields="['title']">
     <template #item="slotProps">
       <Todos :item="slotProps.item" />
@@ -12,14 +18,17 @@
 </template>
 
 <script>
+import { loadUsers, loadTodos } from "./api";
+
 import ListItems from "./components/ListItems.vue";
 import Users from "./components/Users.vue";
 import Todos from "./components/Todos";
+import Popup from "@/components/Popup";
 
-import { loadUsers, loadTodos } from "./api";
 export default {
   name: 'App',
   components: {
+    Popup,
     ListItems,
     Users,
     Todos,
@@ -28,6 +37,7 @@ export default {
     return {
       users: [],
       todos: [],
+      isPopupOpen: false,
     }
   },
   mounted() {
@@ -38,9 +48,14 @@ export default {
       this.todos = todos;
     });
   },
+  methods: {
+    popupConfirmed() {
+      alert('Confiremed');
+      this.isPopupOpen = false;
+    }
+  },
 }
 </script>
-e
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
