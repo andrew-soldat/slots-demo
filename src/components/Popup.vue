@@ -7,8 +7,10 @@
         <slot></slot>
       </div>
       <div class="popup__footer">
-        <button @click="close" class="popup__btn">Cancel</button>
-        <button @click="confirmed" class="popup__btn">Ok</button>
+        <slot name="action" :close="close" :confirmed="confirmed">
+          <button @click="close" class="popup__btn">Cancel</button>
+          <button @click="confirmed" class="popup__btn">Ok</button>
+        </slot>
       </div>
     </div>
   </div>
@@ -92,5 +94,16 @@ export default {
     color: #ffffff;
     min-width: 100px;
     border: none;
+    cursor: pointer;
+  }
+  .popup__btn:disabled {
+    background-color: rgba(0, 0, 255, 0.1);
+    cursor: default;
+  }
+  .popup__input {
+    border-top: 1px solid #000000;
+    padding: 10px 20px;
+    color: #000000;
+    min-width: 150px;
   }
 </style>

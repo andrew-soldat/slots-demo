@@ -1,7 +1,12 @@
 <template>
-  <button @click="isPopupOpen = true">Popup</button>
+  <button @click="popupOpen">Popup</button>
   <Popup @close="isPopupOpen = false" @ok="popupConfirmed" :isOpen="isPopupOpen">
     Do you really want to cancel?
+    <template #action="{ confirmed }">
+      <span>Write</span>
+      <input class="popup__input" v-model="confirmation" :placeholder="$options.CONFIRMATION_TEXT" />
+      <button class="popup__btn" @click="confirmed" :disabled="!isConfirmationCorrect">OK</button>
+    </template>
   </Popup>
   <hr>
   <ListItems :items="users" :fields="['name', 'username']">
@@ -38,8 +43,10 @@ export default {
       users: [],
       todos: [],
       isPopupOpen: false,
+      confirmation: '',
     }
   },
+  CONFIRMATION_TEXT: 'CONFIRM',
   mounted() {
     loadUsers().then((users) => {
       this.users = users;
@@ -49,10 +56,19 @@ export default {
     });
   },
   methods: {
+    popupOpen() {
+      this.isPopupOpen = true;
+      this.confirmation = '';
+    },
     popupConfirmed() {
       alert('Confiremed');
       this.isPopupOpen = false;
-    }
+    },
+  },
+  computed: {
+    isConfirmationCorrect() {
+      return this.confirmation === this.$options.CONFIRMATION_TEXT;
+    },
   },
 }
 </script>
